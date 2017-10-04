@@ -1,0 +1,50 @@
+Vagrant.configure('2') do |config|
+    config.vm.box = 'bento/ubuntu-16.04'
+
+    # Disable /vagrant synced folder
+    config.vm.synced_folder '.', '/vagrant', disabled: true
+
+    # Give moar rams
+    config.vm.provider 'virtualbox' do |vb|
+        vb.cpus = 2
+        vb.memory = 1024
+        vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+        vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+    end
+
+    # Masters
+    #
+
+    config.vm.define 'master_1' do |master_1|
+        master_1.vm.network :private_network, ip: '192.168.10.2', netmask: '255.255.0.0'
+        master_1.vm.hostname = 'master-1'
+    end
+
+    config.vm.define 'master_2' do |master_2|
+        master_2.vm.network :private_network, ip: '192.168.11.2', netmask: '255.255.0.0'
+        master_2.vm.hostname = 'master-2'
+    end
+
+    config.vm.define 'master_3' do |master_3|
+        master_3.vm.network :private_network, ip: '192.168.12.2', netmask: '255.255.0.0'
+        master_3.vm.hostname = 'master-3'
+    end
+
+    # Minions
+    #
+
+    config.vm.define 'minion_1' do |minion_1|
+        minion_1.vm.network :private_network, ip: '192.168.20.2', netmask: '255.255.0.0'
+        minion_1.vm.hostname = 'minion-1'
+    end
+
+    config.vm.define 'minion_2' do |minion_2|
+        minion_2.vm.network :private_network, ip: '192.168.21.2', netmask: '255.255.0.0'
+        minion_2.vm.hostname = 'minion-2'
+    end
+
+    config.vm.define 'minion_3' do |minion_3|
+        minion_3.vm.network :private_network, ip: '192.168.22.2', netmask: '255.255.0.0'
+        minion_3.vm.hostname = 'minion-3'
+    end
+end
