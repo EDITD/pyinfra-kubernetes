@@ -1,0 +1,14 @@
+[Unit]
+Description=Kubernetes Kubelet Server
+Documentation=https://github.com/kubernetes/kubernetes
+
+[Service]
+EnvironmentFile={{ host.data.kubernetes_conf_dir }}/kubelet
+ExecStart={{ host.data.kubernetes_bin_dir }}/kubelet "$KUBELET_ARGS"
+Restart=always
+RestartSec=2s
+StartLimitInterval=0
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target

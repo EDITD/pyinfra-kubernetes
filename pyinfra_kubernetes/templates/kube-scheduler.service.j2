@@ -1,0 +1,12 @@
+[Unit]
+Description=Kubernetes Scheduler Plugin
+Documentation=https://github.com/kubernetes/kubernetes
+
+[Service]
+EnvironmentFile={{ host.data.kubernetes_conf_dir }}/kube-scheduler
+ExecStart={{ host.data.kubernetes_bin_dir }}/kube-scheduler "$KUBE_SCHEDULER_ARGS"
+Restart=on-failure
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

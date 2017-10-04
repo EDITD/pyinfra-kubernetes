@@ -1,0 +1,13 @@
+[Unit]
+Description=Kubernetes API Server
+Documentation=https://github.com/kubernetes/kubernetes
+
+[Service]
+EnvironmentFile={{ host.data.kubernetes_conf_dir }}/kube-apiserver
+ExecStart={{ host.data.kubernetes_bin_dir }}/kube-apiserver "$KUBE_APISERVER_ARGS"
+Restart=on-failure
+Type=notify
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

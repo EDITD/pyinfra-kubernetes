@@ -1,0 +1,12 @@
+[Unit]
+Description=Kubernetes Controller Manager
+Documentation=https://github.com/kubernetes/kubernetes
+
+[Service]
+EnvironmentFile={{ host.data.kubernetes_conf_dir }}/kube-controller-manager
+ExecStart={{ host.data.kubernetes_bin_dir }}/kube-controller-manager "$KUBE_CONTROLLER_MANAGER_ARGS"
+Restart=on-failure
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
