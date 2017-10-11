@@ -58,16 +58,16 @@ def install_kubernetes(state, host, components=None):
         '{{ host.data.kubernetes_temp_filename }}',
     )
 
-    with state.when(download_kubernetes.changed):
-        server.shell(
-            state, host,
-            {'Extract Kubernetes'},
-            '''
-            tar -xzf {{ host.data.kubernetes_temp_filename }} \
-            -C {{ host.data.kubernetes_install_dir }}/{{ host.data.kubernetes_version }} \
-            --strip-components 1
-            ''',
-        )
+    server.shell(
+        state, host,
+        {'Extract Kubernetes'},
+        '''
+        tar -xzf {{ host.data.kubernetes_temp_filename }} \
+        -C {{ host.data.kubernetes_install_dir }}/{{ host.data.kubernetes_version }} \
+        --strip-components 1
+        ''',
+        when=download_kubernetes.changed,
+    )
 
     for binary in components:
         files.link(
