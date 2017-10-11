@@ -1,0 +1,10 @@
+{
+    "groups": {
+        "master_1": ["etcd_nodes", "kubernetes_masters"],
+        "master_2": ["etcd_nodes", "kubernetes_masters"],
+        "master_3": ["etcd_nodes", "kubernetes_masters"],
+        "minion_1": ["kubernetes_nodes"],
+        "minion_2": ["kubernetes_nodes"],
+        "minion_3": ["kubernetes_nodes"]
+    }
+}
