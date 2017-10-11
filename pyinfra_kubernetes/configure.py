@@ -5,6 +5,13 @@ from .defaults import DEFAULTS
 from .util import get_template_path
 
 
+def make_service_kwargs(service_kwargs):
+    return '\n'.join(
+        '    --{0}={1} \\'.format(key, value)
+        for key, value in service_kwargs.items()
+    )
+
+
 @deploy('Configure kubeconfig', data_defaults=DEFAULTS)
 def configure_kubeconfig(state, host, master_address, filename='kubeconfig.yml'):
     files.template(
@@ -20,7 +27,7 @@ def configure_kubeconfig(state, host, master_address, filename='kubeconfig.yml')
 def configure_kubernetes_component(
     state, host, component,
     enable_service=True,
-    **env_template_data
+    **template_data
 ):
     generate_service = files.template(
         state, host,
@@ -34,7 +41,8 @@ def configure_kubernetes_component(
         {'Upload the {0} env file'.format(component)},
         get_template_path('{0}.conf.j2'.format(component)),
         '{{ host.data.kubernetes_conf_dir }}/%s' % component,
-        **env_template_data
+        make_service_kwargs=make_service_kwargs,
+        **template_data
     )
 
     # Start (/enable) the service

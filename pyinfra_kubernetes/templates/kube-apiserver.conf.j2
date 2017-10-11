@@ -1,13 +1,6 @@
-{% macro etcd_servers() -%}
-    {%- for server in etcd_nodes -%}
-        {{ server }}{% if not loop.last %},{% endif %}
-    {%- endfor -%}
-{%- endmacro %}
-
-
 KUBE_APISERVER_ARGS=" \
-    --etcd-servers={{ etcd_servers() }} \
+    --etcd-servers={{ ','.join(etcd_nodes) }} \
     --service-cluster-ip-range={{ host.data.kubernetes_service_cidr }} \
-    --insecure-port=80 \
-    --insecure-bind-address=0.0.0.0 \
+{% if service_kwargs %}{{ make_service_kwargs(service_kwargs) }}
+{% endif -%}
 "
