@@ -33,7 +33,7 @@ with state.limit('kubernetes_nodes'):
     # Install Docker
     deploy_docker(config={
         # Make Docker use the Vagrant provided interface which has it's own /24
-        'bip': '{{ host.fact.network_devices[host.data.network_interface].ipv4.address }}',
+        'bip': '{{ host.fact.network_devices[host.data.network_interface].ipv4.address }}/24',
     })
 
     # Install Kubernetes node components (kubelet, kube-proxy)
