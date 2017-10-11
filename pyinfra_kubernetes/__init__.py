@@ -1,8 +1,14 @@
+from pyinfra.api import deploy
+
 from .configure import configure_kubeconfig, configure_kubernetes_component
 from .install import install_kubernetes
 
 
-def deploy_kubernetes_master(etcd_nodes):
+@deploy('Deploy Kubernetes master')
+def deploy_kubernetes_master(
+    state, host,
+    etcd_nodes,
+):
     # Install server components
     install_kubernetes(components=(
         'kube-apiserver', 'kube-scheduler', 'kube-controller-manager',
@@ -15,7 +21,11 @@ def deploy_kubernetes_master(etcd_nodes):
     configure_kubernetes_component('kube-controller-manager')
 
 
-def deploy_kubernetes_node(master_address):
+@deploy('Deploy Kubernetes node')
+def deploy_kubernetes_node(
+    state, host,
+    master_address,
+):
     # Install node components
     install_kubernetes(components=(
         'kubelet', 'kube-proxy',
