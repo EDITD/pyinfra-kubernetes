@@ -31,7 +31,10 @@ with state.limit('kubernetes_masters'):
 # Install/configure the nodes
 with state.limit('kubernetes_nodes'):
     # Install Docker
-    deploy_docker()
+    deploy_docker(config={
+        # Make Docker use the Vagrant provided interface which has it's own /24
+        'bip': '{{ host.fact.network_devices[host.data.network_interface].ipv4.address }}',
+    })
 
     # Install Kubernetes node components (kubelet, kube-proxy)
     first_master = inventory.get_group('kubernetes_masters')[0]
@@ -43,8 +46,3 @@ with state.limit('kubernetes_nodes'):
             ['ipv4']['address']
         )),
     )
-
-    # deploy_docker(config={
-    #     # Make Docker use the Vagrant provided interface which has it's own /24
-    #     'bip': '{{ host.fact.network_devices[host.data.network_interface].ipv4.address }}',
-    # })
