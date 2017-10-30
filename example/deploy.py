@@ -25,7 +25,14 @@ with state.limit('etcd_nodes'):
 
 # Install/configure the masters (apiserver, controller, scheduler)
 with state.limit('kubernetes_masters'):
-    deploy_kubernetes_master(etcd_nodes=get_etcd_nodes())
+    deploy_kubernetes_master(
+        etcd_nodes=get_etcd_nodes(),
+        kube_apiserver_kwargs={
+            'apiserver-count': len(inventory.get_group('kubernetes_masters')),
+            # Setup to listen locally (insecure, easier for this example!)
+            'insecure-bind-address': '{{ host.fact.network_devices[host.data.network_interface].ipv4.address }}',
+            'insecure-port': '80',
+        },)
 
 
 # Install/configure the nodes
