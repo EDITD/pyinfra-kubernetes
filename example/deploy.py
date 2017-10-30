@@ -52,4 +52,7 @@ with state.limit('kubernetes_nodes'):
             .fact.network_devices[first_master.data.network_interface]
             ['ipv4']['address']
         )),
+        kubelet_kwargs={
+            'fail-swap-on': 'false',
+        },
     )
