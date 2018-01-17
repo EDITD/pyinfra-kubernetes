@@ -8,5 +8,7 @@ DEFAULTS = {
 
     # Config
     'kubernetes_service_cidr': None,  # must be provided
+
+    # API server URL for master components (controller-manager, scheduler)
     'kubernetes_master_url': 'http://127.0.0.1',
 }
